@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../routes/app_pages.dart';
 import 'home.controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -24,15 +25,27 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  _stockTile(
-                    "Food",
-                    "assets/images/food.png",
-                  ),
-                ],
+              child: Obx(
+                () => controller.allStocksData.value.stocks != null
+                    ? ListView(
+                        children: [
+                          for (var index = 0;
+                              index <
+                                  controller.allStocksData.value.stocks!.length;
+                              index++)
+                            _stockTile(
+                              controller.allStocksData.value.stocks![index],
+                              index,
+                            ),
+                        ],
+                      )
+                    : Wrap(),
               ),
             ),
+            // ElevatedButton(
+            //   onPressed: () => {controller.feedValues()},
+            //   child: Text("gee"),
+            // ),
           ],
         ),
       ),
@@ -60,18 +73,28 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  _stockTile(hello, hi) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 13,
-      ),
-      child: Text(
-        "Hii, Good Morning",
-        style: TextStyle(
-          fontSize: 30,
-          color: Color.fromARGB(255, 44, 0, 146),
-          fontWeight: FontWeight.w800,
+  _stockTile(stockData, index) {
+    return InkWell(
+      onTap: () => {
+        Get.toNamed(
+          Routes.STOCK_DETAIL,
+          arguments: stockData,
+        )
+      },
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 13,
+          ),
+          child: Text(
+            stockData.name,
+            style: TextStyle(
+              fontSize: 12,
+              color: Color.fromARGB(255, 44, 0, 146),
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ),
       ),
     );
