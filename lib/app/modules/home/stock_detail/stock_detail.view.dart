@@ -14,16 +14,46 @@ class StockDetailView extends GetView<StockDetailController> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _demoCard("stock name", controller.stockData.name),
-                    _demoCard(
-                        "all time high", controller.stockData.allTimeHigh),
-                    _demoCard("investment period",
-                        controller.stockData.investmentPeriod),
-                    _demoCard("market cap", controller.stockData.marketCap),
-                    _demoCard("peRatio", controller.stockData.peRatio),
-                    _demoCard("Risk", controller.stockData.risk),
-                  ],
+                    {
+                      "label": "Name",
+                      "data": controller.stockData.name,
+                    },
+                    {
+                      "label": "All Time High",
+                      "data": controller.stockData.allTimeHigh,
+                    },
+                    {
+                      "label": "Investment Period",
+                      "data": controller.stockData.investmentPeriod,
+                    },
+                    {
+                      "label": "Market Cap",
+                      "data": controller.stockData.marketCap,
+                    },
+                    {
+                      "label": "P/E Ratio",
+                      "data": controller.stockData.peRatio,
+                    },
+                    {
+                      "label": "Risk",
+                      "data": controller.stockData.risk,
+                    },
+                  ]
+                      .map(
+                        (item) => _dataCard(
+                          item["label"],
+                          item["data"],
+                          color:
+                              item["label"] == "Risk" && item["data"] == "High"
+                                  ? Colors.red
+                                  : item["data"] == "Low"
+                                      ? Colors.green
+                                      : Colors.black87,
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ),
@@ -33,34 +63,35 @@ class StockDetailView extends GetView<StockDetailController> {
     );
   }
 
-  _demoCard(title, data) {
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 20,
-          ),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+  Widget _dataCard(title, data, {color}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+              top: 40,
+            ),
+            child: Text(
+              title.toUpperCase(),
+              style: TextStyle(
+                fontSize: 20,
+              ),
             ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 20,
-          ),
-          child: Text(
-            data.runtimeType.toString() == 'int' ? data.toString() : data,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          Container(
+            child: Text(
+              data.runtimeType.toString() == 'int' ? data.toString() : data,
+              style: TextStyle(
+                color: color,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

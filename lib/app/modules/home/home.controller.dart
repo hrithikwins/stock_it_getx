@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:flutter/services.dart' show assetBundle, rootBundle;
+import 'package:intl/intl.dart';
 import 'package:stock_it/app/data/all_stock_data.model.dart';
 
 class HomeController extends GetxController {
@@ -9,6 +10,8 @@ class HomeController extends GetxController {
 
   final count = 0.obs;
   Rx<AllStockData> allStocksData = AllStockData().obs;
+  String currentHour = DateFormat("hh").format(DateTime.now());
+
   @override
   void onInit() {
     super.onInit();
@@ -37,5 +40,18 @@ class HomeController extends GetxController {
 
   loadJson() {
     return rootBundle.loadString("assets/json/all-stock-data.json");
+  }
+
+  greetings() {
+    var greeting = int.parse(currentHour);
+    if (greeting >= 4) {
+      return 'Morning';
+    } else if (greeting > 12 && greeting <= 18) {
+      return 'Afternoon';
+    } else if (greeting > 18 && greeting <= 24) {
+      return 'Evening';
+    } else {
+      return 'Evening';
+    }
   }
 }

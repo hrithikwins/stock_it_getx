@@ -61,7 +61,7 @@ class HomeView extends GetView<HomeController> {
             horizontal: 13,
           ),
           child: Text(
-            "Hii, Good Morning",
+            "Hii, Good " + controller.greetings() + "!",
             style: TextStyle(
               fontSize: 30,
               color: Color.fromARGB(255, 44, 0, 146),
